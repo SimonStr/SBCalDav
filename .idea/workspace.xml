@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1787d37-2f43-421b-89c2-bd1fffd01512" name="Default Changelist" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBCalDav.php" afterPath="$PROJECT_DIR$/SBCalDav.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/my.php" afterPath="$PROJECT_DIR$/my.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/CalDAVClient.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/addons/icloud-master/PHP/CHANGELOG" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/addons/icloud-master/PHP/COPYRIGHT" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/addons/icloud-master/PHP/README" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/addons/icloud-master/PHP/icloud.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/addons/icloud-master/README" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/addons/ics-parser/class.iCalReader.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/caldav.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/class.iCloudCalendar.class.php" afterPath="" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,38 +35,8 @@
       <file leaf-file-name="SBCalDav.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SBCalDav.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
-              <caret line="276" column="32" lean-forward="true" selection-start-line="276" selection-start-column="32" selection-end-line="276" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CalDAVClient.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CalDAVClient.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="287" column="0" lean-forward="true" selection-start-line="287" selection-start-column="0" selection-end-line="305" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="class.iCloudCalendar.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/class.iCloudCalendar.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="473">
-              <caret line="175" column="39" lean-forward="true" selection-start-line="175" selection-start-column="39" selection-end-line="175" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="caldav.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/caldav.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="452">
+              <caret line="271" column="23" lean-forward="true" selection-start-line="271" selection-start-column="23" selection-end-line="271" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -120,20 +96,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="SBCalDav" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SBCalDav" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SBCalDav" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="addons" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -238,12 +200,12 @@
       <workItem from="1580801315854" duration="10981000" />
       <workItem from="1580818101476" duration="2933000" />
       <workItem from="1580830914670" duration="1232000" />
-      <workItem from="1580840152610" duration="4248000" />
+      <workItem from="1580840152610" duration="4366000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4248000" />
+    <option name="totallyTimeSpent" value="4366000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -333,8 +295,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SBCalDav.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="276" column="32" lean-forward="true" selection-start-line="276" selection-start-column="32" selection-end-line="276" selection-end-column="32" />
+        <state relative-caret-position="452">
+          <caret line="271" column="23" lean-forward="true" selection-start-line="271" selection-start-column="23" selection-end-line="271" selection-end-column="23" />
           <folding />
         </state>
       </provider>
