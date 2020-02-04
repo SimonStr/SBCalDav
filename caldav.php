@@ -2,11 +2,18 @@
 
 //https://p64-calendarws.icloud.com/1716171341/calendars/home
 
+//$account = array(
+//    'server' => 'p64',
+//    'id'    => '1716171341',
+//    'user'  => 'sergey.buchok@gmail.com',
+//    'pass'  => 'vazo-askt-mias-ezuc'
+//);
+
 $account = array(
-    'server' => 'p64',
-    'id'    => '1716171341',
-    'user'  => 'sergey.buchok@gmail.com',
-    'pass'  => 'vazo-askt-mias-ezuc'
+    'server' => 'p39',
+    'id'    => '17101237685',
+    'user'  => 'mymail795@gmail.com',
+    'pass'  => 'jcay-ucij-ljql-wrge'
 );
 
 $uid = 'event-12345';

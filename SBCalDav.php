@@ -78,6 +78,38 @@ class SBCalDav{
 //		var_dump($data);
 		return $data;
 	}
+	/**
+	 * Do a CalDAV PUT request to add an iCloud event.
+	 *
+	 * @access private
+	 * @param string $url
+	 * @param string $data
+	 * @return string
+	 */
+	private function doPutRequest($url, $body) {
+
+		$headers = array(
+			'Content-Type: text/calendar; charset=utf-8',
+			'If-None-Match: *',
+			'Expect: ',
+			'Content-Length: '.strlen($body),
+		);
+		// Initialize cURL
+		$c = curl_init($url);
+		// Set headers
+		curl_setopt($c, CURLOPT_URL, $url);
+		curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($c, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_setopt($c, CURLOPT_USERPWD, $this->user . ":" . $this->passwd);
+		curl_setopt($c, CURLOPT_CUSTOMREQUEST, 'PUT');
+		curl_setopt($c, CURLOPT_POSTFIELDS, $body);
+
+		// Execute and return value
+		$data = curl_exec($c);
+		curl_close($c);
+		return $data;
+	}
 	
 	/**
      * get userID for icloud
@@ -88,6 +120,7 @@ class SBCalDav{
 		$principal_url = $response->response[0]->propstat[0]->prop[0]->{'current-user-principal'}->href;
 		$userID = explode("/", $principal_url);
 		$this->userID = $userID[1];
+		var_dump($this);
 		return true;
 	}
 	
@@ -146,6 +179,7 @@ class SBCalDav{
 					break;
 			}
 		}
+		var_dump($report);
 
 		return $report;
 
@@ -162,7 +196,7 @@ class SBCalDav{
 	 * @param string $location (Optional)
 	 * @return string
 	 */
-	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = null, $location = null) {
+	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $location = "") {
 
 		// Set random event_id
 		$event_id = md5('event-'.rand(1000000, 9999999).time());
@@ -175,27 +209,23 @@ class SBCalDav{
 		$tstamp = gmdate("Ymd\THis\Z");
 
 		// Build ICS content
-		$body  = "BEGIN:VCALENDAR\n";
-		$body .= "VERSION:2.0\n";
-		$body .= "BEGIN:VEVENT\n";
-		$body .= "DTSTAMP:".$tstamp."\n";
-		$body .= "DTSTART:".$tstart."\n";
-		$body .= "DTEND:".$tend."\n";
-		$body .= "UID:".$event_id."\n";
-		if (!empty($description)) {
-			$body .= "DESCRIPTION:".$description."\n";
-		}
-		if (!empty($location)) {
-			$body .= "LOCATION:".$location."\n";
-		}
-		if (!empty($title)) {
-			$body .= "SUMMARY:".$title."\n";
-		}
-		$body .= "END:VEVENT\n";
-		$body .= "END:VCALENDAR\n";
+		$body = <<<__EOD
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTAMP:$tstamp
+DTSTART:$tstart
+DTEND:$tend
+UID:$event_id
+DESCRIPTION:$description
+LOCATION:$location
+SUMMARY:$description
+END:VEVENT
+END:VCALENDAR
+__EOD;
 
 		// Do request
-		$response = $this->doRequest($this->url.$this->userID."/calendars/".$calandar.'/', $body, 'PUT');
+		$response = $this->doPutRequest($this->url.$this->userID.'/calendars/'.$calandar.'/' . $event_id . '.ics', $body);
 		var_dump($response);
 
 		return $event_id;
