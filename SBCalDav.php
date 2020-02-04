@@ -29,6 +29,8 @@ class SBCalDav{
 									<C:prop name="VERSION"/>
 									<C:comp name="VEVENT">
 										<C:prop name="SUMMARY"/>
+										<C:prop name="DESCRIPTION"/>
+										<C:prop name="LOCATION"/>
 										<C:prop name="UID"/>
 										<C:prop name="DTSTART"/>
 										<C:prop name="DTEND"/>
@@ -86,23 +88,22 @@ class SBCalDav{
 	 * @param string $data
 	 * @return string
 	 */
-	private function doPutRequest($url, $body) {
+	private function doPutRequest($url, $headers, $body, $req) {
 
-		$headers = array(
-			'Content-Type: text/calendar; charset=utf-8',
-			'If-None-Match: *',
-			'Expect: ',
-			'Content-Length: '.strlen($body),
-		);
+//		$headers = array(
+//			'Content-Type: text/calendar; charset=utf-8',
+//			'If-None-Match: *',
+//			'Expect: ',
+//			'Content-Length: '.strlen($body),
+//		);
 		// Initialize cURL
 		$c = curl_init($url);
 		// Set headers
-		curl_setopt($c, CURLOPT_URL, $url);
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($c, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		curl_setopt($c, CURLOPT_USERPWD, $this->user . ":" . $this->passwd);
-		curl_setopt($c, CURLOPT_CUSTOMREQUEST, 'PUT');
+		curl_setopt($c, CURLOPT_CUSTOMREQUEST, $req);
 		curl_setopt($c, CURLOPT_POSTFIELDS, $body);
 
 		// Execute and return value
@@ -120,7 +121,7 @@ class SBCalDav{
 		$principal_url = $response->response[0]->propstat[0]->prop[0]->{'current-user-principal'}->href;
 		$userID = explode("/", $principal_url);
 		$this->userID = $userID[1];
-		var_dump($this);
+//		var_dump($this);
 		return true;
 	}
 	
@@ -140,7 +141,7 @@ class SBCalDav{
 	}	
 	
 	/**
-     * get user calendar lists
+     * get user events lists
      */
 	public function getEvents($calandar, $start, $finish){
 		$range = "<C:time-range start=\"$start\" end=\"$finish\"/>";
@@ -179,7 +180,7 @@ class SBCalDav{
 					break;
 			}
 		}
-		var_dump($report);
+        echo '<pre>' . var_export($report, true) . '</pre>';
 
 		return $report;
 
@@ -189,17 +190,33 @@ class SBCalDav{
 	 * Add new iCloud event.
 	 *
 	 * @access public
+     * @param string $calandar
 	 * @param string $date_time_from Format: yyyy-mm-dd HH:ii:ss
 	 * @param string $date_time_to Format: yyyy-mm-dd HH:ii:ss
 	 * @param string $title
 	 * @param string $description (Optional)
 	 * @param string $location (Optional)
+     * @param string $eid (Optional)
 	 * @return string
 	 */
-	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $location = "") {
+	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $location = "", $eid = null) {
 
-		// Set random event_id
-		$event_id = md5('event-'.rand(1000000, 9999999).time());
+
+        if (isset($eid)) {
+            $headers = array(
+                'Content-Type: text/calendar; charset=utf-8',
+                'If: '.$eid,
+                'Expect: ',
+            );
+        } else {
+            $headers = array(
+                'Content-Type: text/calendar; charset=utf-8',
+                'If-None-Match: *',
+                'Expect: ',
+            );
+            // Set random event_id
+            $eid = md5('event-'.rand(1000000, 9999999).time());
+        }
 
 		// Set date start / date end
 		$tstart = gmdate("Ymd\THis\Z", strtotime($date_time_from));
@@ -209,27 +226,57 @@ class SBCalDav{
 		$tstamp = gmdate("Ymd\THis\Z");
 
 		// Build ICS content
-		$body = <<<__EOD
-BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-DTSTAMP:$tstamp
-DTSTART:$tstart
-DTEND:$tend
-UID:$event_id
-DESCRIPTION:$description
-LOCATION:$location
-SUMMARY:$description
-END:VEVENT
-END:VCALENDAR
-__EOD;
+        // Build ICS content
+        $body  = "BEGIN:VCALENDAR\n";
+        $body .= "VERSION:2.0\n";
+        $body .= "BEGIN:VEVENT\n";
+        $body .= "DTSTAMP:".$tstamp."\n";
+        $body .= "DTSTART:".$tstart."\n";
+        $body .= "DTEND:".$tend."\n";
+        $body .= "UID:".$eid."\n";
+        if (!empty($description)) {
+            $body .= "DESCRIPTION:".$description."\n";
+        }
+        if (!empty($location)) {
+            $body .= "LOCATION:".$location."\n";
+        }
+        if (!empty($title)) {
+            $body .= "SUMMARY:".$title."\n";
+        }
+        $body .= "END:VEVENT\n";
+        $body .= "END:VCALENDAR\n";
+
+        $headers[] = 'Content-Length: '.strlen($body);
+
 
 		// Do request
-		$response = $this->doPutRequest($this->url.$this->userID.'/calendars/'.$calandar.'/' . $event_id . '.ics', $body);
-		var_dump($response);
+		$url = $this->url.$this->userID.'/calendars/'.$calandar.'/' . $eid . '.ics';
 
-		return $event_id;
+		$response = $this->doPutRequest($url, $headers, $body, 'PUT');
+//        echo '<pre>' . var_export($response, true) . '</pre>';
+
+		return $eid;
 	}
+    /**
+     * DELETE a text/icalendar resource
+     *
+     * @param string $eid The eid of an existing resource to be deleted, or '*' for any resource at that URL.
+     *
+     * @return int The HTTP Result Code for the DELETE
+     */
+    function DoDELETERequest( $calandar, $eid ) {
+
+        $headers = array(
+            'Content-Type: text/calendar; charset=utf-8',
+            'If: '.$eid,
+            'Expect: ',
+            'Content-Length: 0',
+        );
+        $url = $this->url.$this->userID.'/calendars/'.$calandar.'/' . $eid . '.ics';
+
+        $response = $this->doPutRequest($url, $headers, "", 'DELETE');
+        return $response;
+    }
 
 	/**
 	 * Split response into httpResponse and xmlResponse
