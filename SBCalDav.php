@@ -34,6 +34,7 @@ class SBCalDav{
 										<C:prop name="UID"/>
 										<C:prop name="DTSTART"/>
 										<C:prop name="DTEND"/>
+										<C:prop name="ATTENDEE"/>
 									</C:comp>
 								<C:comp name="VTIMEZONE"/>
 								</C:comp>                    
@@ -199,10 +200,10 @@ class SBCalDav{
      * @param string $eid (Optional)
 	 * @return string
 	 */
-	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $location = "", $eid = null) {
+	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $location = "", $eid = "", $attendee = "") {
 
 
-        if (isset($eid)) {
+        if (!empty($eid)) {
             $headers = array(
                 'Content-Type: text/calendar; charset=utf-8',
                 'If: '.$eid,
@@ -242,6 +243,9 @@ class SBCalDav{
         }
         if (!empty($title)) {
             $body .= "SUMMARY:".$title."\n";
+        }
+        if (!empty($attendee)) {
+            $body .= "ATTENDEE;CUTYPE=INDIVIDUAL;EMAIL=".$attendee.";SCHEDULE-STATUS=5.1:mailto:".$attendee."\n";
         }
         $body .= "END:VEVENT\n";
         $body .= "END:VCALENDAR\n";
