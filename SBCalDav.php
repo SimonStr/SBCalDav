@@ -219,22 +219,26 @@ class SBCalDav{
             $eid = md5('event-'.rand(1000000, 9999999).time());
         }
 
-		// Set date start / date end
-		$tstart = gmdate("Ymd\THis\Z", strtotime($date_time_from));
-		$tend = gmdate("Ymd\THis\Z", strtotime($date_time_to));
 
 		// Set current timestamp
 		$tstamp = gmdate("Ymd\THis\Z");
 
 		// Build ICS content
-        // Build ICS content
         $body  = "BEGIN:VCALENDAR\n";
         $body .= "VERSION:2.0\n";
         $body .= "BEGIN:VEVENT\n";
         $body .= "DTSTAMP:".$tstamp."\n";
-        $body .= "DTSTART:".$tstart."\n";
-        $body .= "DTEND:".$tend."\n";
         $body .= "UID:".$eid."\n";
+		if (!empty($date_time_from)) {
+			// Set date end
+			$tstart = gmdate("Ymd\THis\Z", strtotime($date_time_from));
+			$body .= "DTSTART:".$tstart."\n";
+		}
+		if (!empty($date_time_to)) {
+			// Set date end
+			$tend = gmdate("Ymd\THis\Z", strtotime($date_time_to));
+			$body .= "DTEND:".$tend."\n";
+		}
         if (!empty($description)) {
             $body .= "DESCRIPTION:".$description."\n";
         }
