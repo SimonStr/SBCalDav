@@ -200,7 +200,7 @@ class SBCalDav{
      * @param string $eid (Optional)
 	 * @return string
 	 */
-	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $location = "", $eid = "", $attendee = "") {
+	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $eid = "", $attendee = "") {
 
 
         if (!empty($eid)) {
@@ -242,9 +242,9 @@ class SBCalDav{
         if (!empty($description)) {
             $body .= "DESCRIPTION:".$description."\n";
         }
-        if (!empty($location)) {
-            $body .= "LOCATION:".$location."\n";
-        }
+//        if (!empty($location)) {
+//            $body .= "LOCATION:".$location."\n";
+//        }
         if (!empty($title)) {
             $body .= "SUMMARY:".$title."\n";
         }
