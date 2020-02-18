@@ -200,7 +200,7 @@ class SBCalDav{
      * @param string $eid (Optional)
 	 * @return string
 	 */
-	public function add_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $eid = "", $attendee = "") {
+	public function put_event($calandar, $date_time_from, $date_time_to, $title, $description = "", $eid = "", $attendee = "") {
 
 
         if (!empty($eid)) {
@@ -249,11 +249,15 @@ class SBCalDav{
             $body .= "SUMMARY:".$title."\n";
         }
         if (!empty($attendee)) {
-            $body .= "ATTENDEE;CUTYPE=INDIVIDUAL;EMAIL=".$attendee.";SCHEDULE-STATUS=5.1:mailto:".$attendee."\n";
+			$body .= "ORGANIZER;CN=Hair Beauty:mailto:hairbeautybot@gmail.com\n";
+			$body .= "ATTENDEE;CN=Hair Beauty:mailto:hairbeautybot@gmail.com\n";
+			$body .= "ATTENDEE;CN=Client:mailto:".$attendee."\n";
         }
         $body .= "END:VEVENT\n";
         $body .= "END:VCALENDAR\n";
 
+//		var_dump($body);
+//		die();
         $headers[] = 'Content-Length: '.strlen($body);
 
 
